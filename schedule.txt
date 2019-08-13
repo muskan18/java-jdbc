@@ -1,0 +1,17 @@
+package jdbcdemo;
+
+
+public class Schedule {
+
+	public static void main(String args[])
+	{
+		working w=new working();
+
+		System.out.println("WELCOME TO MYSCHEDULE !! ");
+
+		w.details();
+
+
+	}
+
+}

@@ -1,0 +1,16 @@
+package jdbcdemo;
+
+public class QUIZ {
+
+	public static void main(String args[])
+	{
+		
+	System.out.println("WELCOME TO QUIZ STATION !! ");
+	
+	sub s=new sub();
+
+	
+	
+	}
+	
+}

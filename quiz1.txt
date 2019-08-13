@@ -1,0 +1,211 @@
+package jdbcdemo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+class sub{
+	int c;
+	
+	Scanner sc=new Scanner(System.in);
+	
+	int marks=0;
+
+	String answ;
+	
+	String name;
+	
+	String email;
+	
+	boolean q=true;
+	
+	
+	sub()
+	{
+		quizm();		
+	}
+	
+	 void quizm()
+	{
+	
+		System.out.println("ENTER YOUR NAME");
+		
+		name=sc.nextLine();
+		
+		System.out.println("ENTER EMAIL -ID");
+		
+		email=sc.nextLine();
+	
+		System.out.println("============================================");
+		
+		
+		System.out.println("=====================================");
+	
+		try {	
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/project","root","");
+
+		Statement stmt=con.createStatement();
+
+		while(q) {
+			
+			System.out.println("TO TAKE HISTORY QUIZ PRESS 1"+"\n"+"TO TAKE GEOGRAPHY QUIZ PRESS 2"+"\n"+"TO EXIT PRESS 3");
+			
+			c=sc.nextInt();
+		
+			switch (c)
+			{
+			
+			case 1:
+			
+			{
+				 String quer="select *from history";
+					
+			
+				 ResultSet pointer1=stmt.executeQuery(quer);
+				
+				 sc.nextLine();
+					
+					while(pointer1.next()) {
+				
+						System.out.println(pointer1.getString(2)+"\na)"+pointer1.getString(3)+"\nb) "+pointer1.getString(4)+"\nc) "+pointer1.getString(5)+"\nd) "+pointer1.getString(6)+"\n");
+					
+						
+						System.out.println("ENTER YOUR ANSWER : ");
+						
+						answ=sc.nextLine();
+						
+						if(pointer1.getString(7).equalsIgnoreCase(answ))
+						{
+							marks++;
+						}
+						
+						System.out.println("=====================================");
+						
+						
+						
+						
+					}
+					System.out.println(name +" your score in history quiz is  : "+marks);
+					
+
+					System.out.println("=====================================");
+
+					
+					System.out.println("TO VIEW THE CORRECT ANSWERS OF THE QUIZ PRESS 1");
+					
+					int inp=sc.nextInt();
+			
+					
+
+					 ResultSet pointer2=stmt.executeQuery(quer);
+				
+					if(inp==1)
+					{
+						while(pointer2.next()) {
+							
+							System.out.println(pointer2.getString(7)+"\n");
+					
+					}
+					}
+					
+					System.out.println("=====================================");
+
+					
+					break;
+					
+				
+				
+			}
+			
+			case 2:
+			{
+				String quer="select *from geography";
+				
+				ResultSet pointer1=stmt.executeQuery(quer);
+				
+				sc.nextLine();
+				
+				while(pointer1.next()) {
+				
+					System.out.println(pointer1.getString(2)+"\na)"+pointer1.getString(3)+"\nb) "+pointer1.getString(4)+"\nc) "+pointer1.getString(5)+"\nd) "+pointer1.getString(6)+"\n");
+				
+					
+					System.out.println("ENTER YOUR ANSWER");
+					
+					answ=sc.nextLine();
+					
+					if(pointer1.getString(7).equalsIgnoreCase(answ))
+					{
+						marks++;
+					}
+					
+					
+					
+					
+				}
+				System.out.println(name +" your score is : "+marks);
+				
+				System.out.println("==========================");
+			
+				System.out.println("TO VIEW THE CORRECT ANSWERS OF THE QUIZ PRESS 1");
+				
+				int inp=sc.nextInt();
+
+				 ResultSet pointer2=stmt.executeQuery(quer);
+
+				if(inp==1)
+				{
+					while(pointer2.next()) {
+						
+						System.out.println(pointer2.getString(7)+"\n");
+				
+				}
+				}
+				
+				
+				
+				System.out.println("==========================");
+
+				
+				
+				
+				
+				
+				
+				break;
+				
+				
+				
+			}
+			case 3:
+			{
+				
+				System.out.println("QUIZ OVER !! ");
+				
+				q=false;
+				
+			}
+			
+		
+			
+		}
+		}
+		
+		
+	}
+	catch(Exception e)
+	{
+	e.printStackTrace();
+	}
+		
+		
+	}
+
+	
+	
+}

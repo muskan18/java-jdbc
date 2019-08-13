@@ -1,0 +1,223 @@
+package jdbcdemo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+class working {
+
+	Scanner sc=new Scanner(System.in);
+
+	String name;
+
+	boolean flag=true;
+
+	int choice;
+
+	String evname;
+
+	String date;
+
+	String time;
+	//y-m-d date format 
+	//h:m:s time format 
+
+	void details()
+	{
+
+
+		System.out.println("ENTER YOUR NAME");
+
+		name=sc.nextLine();	
+
+		System.out.println("===========================");
+
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/project","root","");
+
+			Statement stmt=con.createStatement();
+
+
+			while(flag)
+			{
+				System.out.println("TO ENTER A NEW SCHEDULE PRESS 1"+"\n"+"TO VIEW A SCHEDULE PRESS 2"+"\n"+"TO DELETE A SCHEDULE PRESS 3");
+
+				System.out.println("TO UPDATE A SCHEDULE PRESS 4");
+
+				System.out.println("TO EXIT PRESS 5 ");
+
+				choice=sc.nextInt();
+
+				sc.nextLine();
+
+				switch (choice)
+				{
+
+				case 1:
+				{
+					System.out.println("ENTER THE NAME OF THE EVENT");
+
+					evname=sc.nextLine();
+
+
+					System.out.println("ENTER THE TIME OF EVENT AS HH:MM:SS");
+
+					time=sc.nextLine();
+
+					System.out.println("ENTER THE DATE OF EVENT AS Y-M-D");
+
+					date=sc.nextLine();
+
+					System.out.println("========================");
+
+
+					String query="insert into schedule values('" + evname + "','" + time + "','" +date +" ' )";
+
+					stmt.execute(query);
+
+					System.out.println("EVENT ADDED ! ");
+
+
+					System.out.println("=======================");
+
+					break;
+
+				}
+
+				case 2:
+				{
+
+					System.out.println("ENTER THE NAME OF SCHEDULE WHOSE DETAIL YOU WANT ");
+
+					String s=sc.nextLine();
+
+					String quer="select *from schedule where type_of_event = '" +s +"'";
+
+					ResultSet pointer1=stmt.executeQuery(quer);
+
+
+
+					while(pointer1.next()) {
+
+						System.out.println(pointer1.getString(1)+"\n"+pointer1.getString(2)+"\n"+pointer1.getString(3));
+						
+						System.out.println("=======================");
+					
+					}
+
+
+
+
+					break;
+
+				}
+				case 3:
+				{
+					System.out.println("ENTER THE NAME OF SCHEDULE WHICH YOU WANT TO DELETE ");
+
+					String s=sc.nextLine();
+
+					String quer="delete from schedule where type_of_event = '" +s +"'";
+
+					stmt.execute(quer)	;
+
+					System.out.println("EVENT DELETED !! ");
+					
+					System.out.println("=======================");
+
+
+					break;
+				}
+
+
+
+
+				case 4:
+				{
+
+
+					System.out.println("ENTER THE NAME OF EVENT TO BE UPDATED");
+
+					String x=sc.nextLine();
+
+
+					System.out.println("TO UPDATE TIME PRESS 1 AND TO UPDATE DATE PRESS 2");
+
+					int	q=sc.nextInt();
+
+					sc.nextLine();
+
+					if(q==1) 
+					{
+						System.out.println("ENTER THE TIME ");
+
+						String y=sc.nextLine();
+
+						String query1=" update schedule set time_of_event='"+y+"' where type_of_event='"+x+"' ";
+
+						stmt.execute(query1);
+
+						System.out.println("TIME UPDATED !");
+						
+						System.out.println("=======================");
+
+
+
+					}
+					else if(q==2) {
+
+						System.out.println("ENTER THE NEW DATE");
+
+						String z=sc.nextLine();
+
+						String query1="update schedule set date_of_event='"+z+"' where type_of_event='"+x+"' ";
+
+						stmt.execute(query1);
+
+						System.out.println("DATE UPDATED ! ");
+						
+						System.out.println("=======================");
+
+
+					}
+					else
+					{
+						System.out.println("ENTER A VALID CHOICE ");
+					}
+
+					break;
+				}
+
+
+				case 5:
+				{
+
+					System.out.println("SCHEDULER CLOSED !!");
+
+					flag=false;
+
+
+				}
+				}
+			}
+
+
+		}
+
+		catch(Exception e)
+		{
+
+			e.printStackTrace();
+
+		}
+
+
+	}
+	
+	
+}
